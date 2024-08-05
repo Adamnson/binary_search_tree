@@ -84,5 +84,24 @@ describe Node do # rubocop:disable Metrics/BlockLength
       node2 = Node.new("Chris")
       expect(node1 <=> node2).to eql(1)
     end
+
+    n1 = Node.new("Z")
+    n2 = Node.new("YY")
+    n3 = Node.new("XXX")
+    n4 = Node.new("WWWW")
+    n5 = Node.new("VVVVV")
+    puts "sorted: #{[n3, n2, n5, n4, n1].sort}"
+
+    it "checks if a value lies in between two other values (false)" do
+      expect(n4.between?(n1, n3)).to be(false)
+    end
+
+    it "checks if a value lies in between two other values (true)" do
+      expect(n4.between?(n5, n3)).to be(true)
+    end
+
+    it "sorts the nodes based on their values" do
+      expect([n3, n2, n5, n4, n1].sort).to eql([n5, n4, n3, n2, n1])
+    end
   end
 end
