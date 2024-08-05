@@ -33,24 +33,31 @@ class Tree
   def build_tree(arr, size)
     return Node.new(arr[0]) if size < 2
 
+    mid, left, right = split_array(arr)
+    if right.nil?
+      Node.new(arr[mid], build_tree(left, left.size))
+    else
+      Node.new(arr[mid], build_tree(left, left.size), build_tree(right, right.size))
+    end
+  end
+
+  def split_array(arr)
     arr = arr.sort
     mid = (arr.size / 2).floor
     left = arr[0..(mid - 1)]
-    right = arr[(mid + 1)..]
-    Node.new(arr[mid],
-             build_tree(left, left.size),
-             build_tree(right, right.size))
+    right = arr[(mid + 1)..].empty? ? nil : arr[(mid + 1)..]
+    [mid, left, right]
   end
 
   def pretty_print(node = @root, prefix = "", is_left: true)
-    pretty_print(node.right, "#{prefix}#{is_left ? '│   ' : '    '}", false) unless node.right.nil?
+    pretty_print(node.right, "#{prefix}#{is_left ? '│   ' : '    '}", is_left: false) if node.right
     puts "#{prefix}#{is_left ? '└── ' : '┌── '}#{node.value}"
-    pretty_print(node.left, "#{prefix}#{is_left ? '    ' : '│   '}", true) unless node.left.nil?
+    pretty_print(node.left, "#{prefix}#{is_left ? '    ' : '│   '}", is_left: true) if node.left
   end
 end
 
-# t1 = Tree.new([1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324])
-t1 = Tree.new([1, 7, 4, 23, 8])
+t1 = Tree.new([1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324])
+# t1 = Tree.new([1, 7, 4, 23, 8])
 
-p t1
-pp t1
+# p t1.root
+t1.pretty_print(t1.root)
