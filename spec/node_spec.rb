@@ -71,4 +71,18 @@ describe Node do # rubocop:disable Metrics/BlockLength
       expect(node.right.value).to eql("right")
     end
   end
+
+  context "compare nodes based on value" do
+    it "compares two nodes on the basis of thier values (int)" do
+      node1 = Node.new(5)
+      node2 = Node.new(15)
+      expect(node1 <=> node2).to eql(-1)
+    end
+
+    it "compares two nodes on the basis of thier values (string)" do
+      node1 = Node.new("Paul")
+      node2 = Node.new("Chris")
+      expect(node1 <=> node2).to eql(1)
+    end
+  end
 end

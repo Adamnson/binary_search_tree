@@ -6,7 +6,12 @@
 # class methods:
 #  initialize
 class Node
+  include Comparable
   attr_accessor :left, :right, :value
+
+  def <=>(other)
+    @value <=> other.value
+  end
 
   def initialize(val = nil, left = nil, right = nil)
     @value = val
