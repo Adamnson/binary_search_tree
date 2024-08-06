@@ -61,6 +61,21 @@ class Tree
     end
   end
 
+  def delete(element, node = @root)
+    # if it is a leaf node, remove
+    # if it is an intermediate node, remove and reassign
+    # if it the root node?
+
+    next_node = node.value > element ? node.left : node.right
+    return if next_node.nil?
+
+    if next_node.value.eql?(element)
+      next_node < node ? node.left = nil : node.right = nil
+    else
+      delete(element, next_node)
+    end
+  end
+
   def pretty_print(node = @root, prefix = "", is_left: true)
     pretty_print(node.right, "#{prefix}#{is_left ? '│   ' : '    '}", is_left: false) if node.right
     puts "#{prefix}#{is_left ? '└── ' : '┌── '}#{node.value}"
@@ -68,8 +83,8 @@ class Tree
   end
 end
 
-# t1 = Tree.new([1, 7, 4, 23, 8, 27, 79, 111, 47, 9, 4, 3, 5, 7, 9, 67, 6345, 324])
-t1 = Tree.new([1, 7, 4, 23, 8])
+t1 = Tree.new([1, 7, 4, 23, 8, 27, 79, 111, 47, 9, 4, 3, 5, 7, 9, 67, 6345, 324])
+# t1 = Tree.new([1, 7, 4, 23, 8])
 
 # p t1.root
 t1.pretty_print
@@ -78,5 +93,9 @@ t1.pretty_print
 # t1.insert(-11)
 # t1.insert(57)
 # t1.insert(39)
-puts t1.insert(5)
+# puts t1.insert(5)
+
+t1.delete(67)
+t1.pretty_print
+t1.delete(7)
 t1.pretty_print
