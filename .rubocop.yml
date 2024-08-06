@@ -17,3 +17,9 @@ Style/StringLiterals:
 
 Style/FrozenStringLiteralComment:
   EnforcedStyle: never
+
+Metrics/AbcSize:
+  Max: 20.0
+
+Metric/MethodLength:
+  Max: 15

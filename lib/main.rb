@@ -62,18 +62,47 @@ class Tree
   end
 
   def delete(element, node = @root)
-    # if it is a leaf node, remove
-    # if it is an intermediate node, remove and reassign
-    # if it the root node?
-
     next_node = node.value > element ? node.left : node.right
     return if next_node.nil?
 
     if next_node.value.eql?(element)
-      next_node < node ? node.left = nil : node.right = nil
+      delete_node_based_on_branching(node, next_node)
     else
       delete(element, next_node)
     end
+  end
+
+  def delete_node_based_on_branching(node, next_node) # rubocop:disable Metrics/CyclomaticComplexity,Metrics/PerceivedComplexity
+    is_leaf_node = next_node.left.nil? && next_node.right.nil? # leaf_node_deletion
+    has_only_left = next_node < node && next_node.right.nil? # deletion of node with single child
+    has_only_right = next_node > node && next_node.left.nil? # deletion of node with single child
+    if is_leaf_node
+      next_node < node ? node.left = nil : node.right = nil
+    elsif has_only_left
+      node.left = next_node.left
+    elsif has_only_right
+      node.right = next_node.right
+    else
+      delete_node_with_left_and_right(node, next_node)
+    end
+  end
+
+  def delete_node_with_left_and_right(node, next_node)
+    in_order_successor = next_node.right
+    if in_order_successor.left.nil?
+      in_order_successor.left = next_node.left
+      next_node < node ? node.left = in_order_successor : node.right = in_order_successor
+    else
+      in_order_successor = in_order_successor.left until in_order_successor.left.left.nil? && in_order_successor.left.right.nil?
+      swap(next_node, in_order_successor)
+      in_order_successor.left = nil
+    end
+  end
+
+  def swap(node_a, node_b)
+    node_a.value += node_b.left.value
+    node_b.left.value = node_a.value - node_b.left.value
+    node_a.value -= node_b.left.value
   end
 
   def pretty_print(node = @root, prefix = "", is_left: true)
@@ -95,7 +124,17 @@ t1.pretty_print
 # t1.insert(39)
 # puts t1.insert(5)
 
-t1.delete(67)
-t1.pretty_print
-t1.delete(7)
+# t1.delete(67)
+# t1.pretty_print
+# t1.delete(7)
+# t1.pretty_print
+# t1.delete(8)
+# t1.pretty_print
+
+# t1.delete(79)
+# t1.pretty_print
+# t1.delete(5)
+# t1.pretty_print
+
+t1.delete(23)
 t1.pretty_print
