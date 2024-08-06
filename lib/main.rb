@@ -27,23 +27,23 @@ class Tree
   attr_accessor :root
 
   def initialize(arr)
-    @root = build_tree(arr, arr.size)
+    @root = build_tree(arr)
   end
 
-  def build_tree(arr, size)
-    return Node.new(arr[0]) if size < 2
+  def build_tree(arr)
+    return Node.new(arr[0]) if arr.one?
 
-    mid, left, right = split_array(arr)
+    arr_cp = arr.uniq.sort
+    mid, left, right = split_array(arr_cp)
     if right.nil?
-      Node.new(arr[mid], build_tree(left, left.size))
+      Node.new(arr_cp[mid], build_tree(left))
     else
-      Node.new(arr[mid], build_tree(left, left.size), build_tree(right, right.size))
+      Node.new(arr_cp[mid], build_tree(left), build_tree(right))
     end
   end
 
   def split_array(arr)
-    arr = arr.sort
-    mid = (arr.size / 2).floor
+    mid = (arr.size / 2)
     left = arr[0..(mid - 1)]
     right = arr[(mid + 1)..].empty? ? nil : arr[(mid + 1)..]
     [mid, left, right]
