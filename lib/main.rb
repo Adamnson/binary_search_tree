@@ -52,12 +52,11 @@ class Tree
   def insert(element, node = @root)
     return if element.eql?(node.value)
 
-    if node.left.nil? && node.right.nil?
+    next_node = element < node.value ? node.left : node.right
+    if (node.left.nil? && node.right.nil?) || next_node.nil?
       new_node = Node.new(element)
       new_node < node ? node.left = new_node : node.right = new_node
-      nil
     else
-      next_node = element < node.value ? node.left : node.right
       insert(element, next_node)
     end
   end
@@ -79,4 +78,5 @@ t1.pretty_print
 # t1.insert(-11)
 # t1.insert(57)
 # t1.insert(39)
-# t1.pretty_print
+puts t1.insert(5)
+t1.pretty_print
