@@ -33,6 +33,17 @@ describe Tree do
       expect(t1.root.left.right.left).to eql(nil)
     end
 
-    # it "deletes an intermediate node"
+    it "deletes an intermediate node" do
+      t1 = Tree.new([1, 7, 4, 23, 8, 27, 79, 111, 47, 9, 4, 3, 5, 7, 9, 67, 6345, 324])
+      expect(t1.root.right.value).to eql(79)
+      expect(t1.root.right.right.value).to eql(324)
+      expect(t1.root.right.right.left.value).to eql(111)
+      expect(t1.root.right.left.value).to eql(47)
+      t1.delete(79)
+      expect(t1.root.right.value).to eql(111)
+      expect(t1.root.right.right.value).to eql(324)
+      expect(t1.root.right.right.left).to eql(nil)
+      expect(t1.root.right.left.value).to eql(47)
+    end
   end
 end

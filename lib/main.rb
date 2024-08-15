@@ -65,6 +65,8 @@ class Tree
     next_node = node.value > element ? node.left : node.right
     return if next_node.nil?
 
+    # return delete_node_with_left_and_right(@root) if @root.value.eql?(element)
+
     if next_node.value.eql?(element)
       delete_node_based_on_branching(node, next_node)
     else
@@ -131,10 +133,13 @@ t1.pretty_print
 # t1.delete(8)
 # t1.pretty_print
 
-# t1.delete(79)
-# t1.pretty_print
+t1.delete(79)
+t1.pretty_print
 # t1.delete(5)
 # t1.pretty_print
 
-t1.delete(23)
-t1.pretty_print
+# t1.delete(23)
+# t1.pretty_print
+
+# t1.delete(27)
+# t1.pretty_print
