@@ -46,4 +46,22 @@ describe Tree do
       expect(t1.root.right.left.value).to eql(47)
     end
   end
+
+  context "#find" do
+  t1 = Tree.new([1, 7, 4, 23, 8, 27, 79, 111, 47, 9, 4, 3, 5, 7, 9, 67, 6345, 324])
+    it "retruns the node containing the value, if exists" do
+      node = t1.find(111)
+      expect(node.value).to eql(111)
+    end
+
+    it "return nil if the value was not found" do
+      node = t1.find(36)
+      expect(node).to eql(nil)
+    end
+
+    it "finds and returns the root element correctly" do
+      node = t1.find(23)
+      expect(node).to eql(t1.root)
+    end
+  end
 end

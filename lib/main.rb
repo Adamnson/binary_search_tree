@@ -107,6 +107,18 @@ class Tree
     node_a.value -= node_b.left.value
   end
 
+  def find(val, node = @root)
+    return node if node.value.eql?(val)
+
+    if val < node.value && !node.left.nil?
+      find(val,node.left)
+    elsif val > node.value && !node.right.nil?
+      find(val, node.right)
+    else
+      return nil
+    end
+  end
+
   def pretty_print(node = @root, prefix = "", is_left: true)
     pretty_print(node.right, "#{prefix}#{is_left ? '│   ' : '    '}", is_left: false) if node.right
     puts "#{prefix}#{is_left ? '└── ' : '┌── '}#{node.value}"
@@ -133,12 +145,6 @@ t1.pretty_print
 # t1.delete(8)
 # t1.pretty_print
 
-t1.delete(79)
-t1.pretty_print
-# t1.delete(5)
-# t1.pretty_print
+puts t1.find(5)
 
-t1.delete(23)
-t1.pretty_print
-
-
+puts t1.find(39)
