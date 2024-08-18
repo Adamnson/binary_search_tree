@@ -25,9 +25,12 @@ end
 #
 class Tree
   attr_accessor :root
+  attr_reader :level_order_q
 
   def initialize(arr)
     @root = build_tree(arr)
+    @level_order_q = [@root]
+    @loq_index = 0
   end
 
   def build_tree(arr)
@@ -119,6 +122,19 @@ class Tree
     end
   end
 
+  def level_order_rec(node = @root)
+    #start at root node
+    #add left child then right child to the queue
+    #repeat step 2 for first element in the queue and 
+    #remove first element in the queue
+    return if node.left.nil? && node.right.nil?
+    @level_order_q.append(node.left) unless node.left.nil?
+    @level_order_q.append(node.right) unless node.right.nil?
+    @loq_index += 1
+    node = @level_order_q[@loq_index]
+    level_order_rec(node)
+  end
+
   def pretty_print(node = @root, prefix = "", is_left: true)
     pretty_print(node.right, "#{prefix}#{is_left ? '│   ' : '    '}", is_left: false) if node.right
     puts "#{prefix}#{is_left ? '└── ' : '┌── '}#{node.value}"
@@ -145,6 +161,11 @@ t1.pretty_print
 # t1.delete(8)
 # t1.pretty_print
 
-puts t1.find(5)
+# puts t1.find(5)
 
-puts t1.find(39)
+# puts t1.find(39)
+
+puts "printing array #{t1.level_order_q}"
+t1.level_order_rec
+t1.level_order_q.each {|e| print "#{e.value} "}
+puts ""

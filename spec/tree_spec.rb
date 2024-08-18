@@ -64,4 +64,17 @@ describe Tree do
       expect(node).to eql(t1.root)
     end
   end
+
+  context "level_order_rec" do
+    t1 = Tree.new([1, 7, 4, 23, 3,15,8])
+    expected = [t1.root, t1.root.left, t1.root.right,
+                t1.root.left.left, t1.root.left.right,
+                t1.root.right.left, t1.root.right.right]
+
+    it "returns an array with all nodes traversed (left->right)" do
+      expect(t1.level_order_q).to eql([t1.root])
+      t1.level_order_rec
+      expect(t1.level_order_q).to eql(expected)
+    end
+  end
 end
