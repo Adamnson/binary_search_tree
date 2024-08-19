@@ -92,13 +92,14 @@ class Tree
     end
   end
 
-  def delete_node_with_left_and_right(node, next_node=node)
+  def delete_node_with_left_and_right(node, next_node = node)
     in_order_successor = next_node.right
     if in_order_successor.left.nil?
       in_order_successor.left = next_node.left
       next_node < node ? node.left = in_order_successor : node.right = in_order_successor
     else
-      in_order_successor = in_order_successor.left until in_order_successor.left.left.nil? && in_order_successor.left.right.nil?
+      reached_leaf_node = in_order_successor.left.left.nil? && in_order_successor.left.right.nil?
+      in_order_successor = in_order_successor.left until reached_leaf_node
       swap(next_node, in_order_successor)
       in_order_successor.left = nil
     end
@@ -114,25 +115,21 @@ class Tree
     return node if node.value.eql?(val)
 
     if val < node.value && !node.left.nil?
-      find(val,node.left)
+      find(val, node.left)
     elsif val > node.value && !node.right.nil?
       find(val, node.right)
-    else
-      return nil
     end
   end
 
   def level_order_rec(node = @root)
-    #start at root node
-    #add left child then right child to the queue
-    #repeat step 2 for first element in the queue and 
-    #remove first element in the queue
     return if node.left.nil? && node.right.nil?
+
     @level_order_q.append(node.left) unless node.left.nil?
     @level_order_q.append(node.right) unless node.right.nil?
     @loq_index += 1
     node = @level_order_q[@loq_index]
     level_order_rec(node)
+    @level_order_q
   end
 
   def pretty_print(node = @root, prefix = "", is_left: true)
@@ -165,7 +162,18 @@ t1.pretty_print
 
 # puts t1.find(39)
 
-puts "printing array #{t1.level_order_q}"
-t1.level_order_rec
-t1.level_order_q.each {|e| print "#{e.value} "}
-puts ""
+sol = t1.level_order_rec
+
+# puts "sol is #{sol}"
+
+puts "all elements in level order: "
+sol.each { |e| print "#{e.value} " }
+puts " "
+
+puts "root + right children: "
+sol.each_with_index { |e, i| print "#{e.value} " if i.even? }
+puts " "
+
+puts "left children"
+sol.each_with_index { |e, i| print "#{e.value} " if i.odd? }
+puts " "

@@ -1,6 +1,6 @@
 require "./lib/main"
 
-describe Tree do
+describe Tree do # rubocop:disable Metrics/BlockLength
   context "#insert" do
     it "returns nil if element is root" do
       t1 = Tree.new([1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324])
@@ -48,7 +48,7 @@ describe Tree do
   end
 
   context "#find" do
-  t1 = Tree.new([1, 7, 4, 23, 8, 27, 79, 111, 47, 9, 4, 3, 5, 7, 9, 67, 6345, 324])
+    t1 = Tree.new([1, 7, 4, 23, 8, 27, 79, 111, 47, 9, 4, 3, 5, 7, 9, 67, 6345, 324])
     it "retruns the node containing the value, if exists" do
       node = t1.find(111)
       expect(node.value).to eql(111)
@@ -66,7 +66,7 @@ describe Tree do
   end
 
   context "level_order_rec" do
-    t1 = Tree.new([1, 7, 4, 23, 3,15,8])
+    t1 = Tree.new([1, 7, 4, 23, 3, 15, 8])
     expected = [t1.root, t1.root.left, t1.root.right,
                 t1.root.left.left, t1.root.left.right,
                 t1.root.right.left, t1.root.right.right]
