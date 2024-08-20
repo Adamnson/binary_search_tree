@@ -137,11 +137,6 @@ class Tree # rubocop:disable Metrics/ClassLength
     @in_order_q = [] if clear
     return @in_order_q.append(node) if node.left.nil? && node.right.nil?
 
-    # visit a node
-    #   if left exists - add left
-    #   if right exists - add root
-    #    call recursively with right
-
     in_order(node.left, clear: false) unless node.left.nil?
     @in_order_q.append(node)
     return if node.right.nil?
