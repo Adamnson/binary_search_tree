@@ -23,14 +23,15 @@ end
 # class Tree builds a binary search tree based on the input array
 #
 #
-class Tree
+class Tree # rubocop:disable Metrics/ClassLength
   attr_accessor :root
-  attr_reader :level_order_q
+  attr_reader :level_order_q, :in_order_q
 
   def initialize(arr)
     @root = build_tree(arr)
     @level_order_q = [@root]
     @loq_index = 0
+    @in_order_q = []
   end
 
   def build_tree(arr)
@@ -132,6 +133,24 @@ class Tree
     @level_order_q
   end
 
+  def in_order(node = @root, clear: true)
+    @in_order_q = [] if clear
+    return @in_order_q.append(node) if node.left.nil? && node.right.nil?
+
+    # visit a node
+    #   if left exists - add left
+    #   if right exists - add root
+    #    call recursively with right
+
+    in_order(node.left, clear: false) unless node.left.nil?
+    @in_order_q.append(node)
+    return if node.right.nil?
+
+    in_order(node.right, clear: false)
+
+    @in_order_q
+  end
+
   def pretty_print(node = @root, prefix = "", is_left: true)
     pretty_print(node.right, "#{prefix}#{is_left ? '│   ' : '    '}", is_left: false) if node.right
     puts "#{prefix}#{is_left ? '└── ' : '┌── '}#{node.value}"
@@ -162,18 +181,35 @@ t1.pretty_print
 
 # puts t1.find(39)
 
-sol = t1.level_order_rec
+# sol = t1.level_order_rec
 
 # puts "sol is #{sol}"
 
-puts "all elements in level order: "
-sol.each { |e| print "#{e.value} " }
+# puts "all elements in level order: "
+# sol.each { |e| print "#{e.value} " }
+# puts " "
+
+# puts "root + right children: "
+# sol.each_with_index { |e, i| print "#{e.value} " if i.even? }
+# puts " "
+
+# puts "left children"
+# sol.each_with_index { |e, i| print "#{e.value} " if i.odd? }
+# puts " "
+
+in_ord_q = t1.in_order
+
+in_ord_q.each { |e| print "#{e.value} " }
 puts " "
 
-puts "root + right children: "
-sol.each_with_index { |e, i| print "#{e.value} " if i.even? }
-puts " "
+t1.delete(67)
+t1.pretty_print
 
-puts "left children"
-sol.each_with_index { |e, i| print "#{e.value} " if i.odd? }
+t1.delete(8)
+t1.pretty_print
+
+in_ord_q = t1.in_order
+
+puts "printing after deletions"
+in_ord_q.each { |e| print "#{e.value} " }
 puts " "
