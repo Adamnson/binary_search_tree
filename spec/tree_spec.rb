@@ -74,19 +74,66 @@ describe Tree do # rubocop:disable Metrics/BlockLength
                 t1.root.left.left, t1.root.left.right,
                 t1.root.right.left, t1.root.right.right]
 
-    it "returns an array with all nodes traversed (left->right)" do
+    it "returns an array with all nodes traversed " do
       expect(t1.level_order_q).to eql([t1.root])
       t1.level_order_rec
       expect(t1.level_order_q).to eql(expected)
     end
+
+    it "contains root + right children on even index positions" do
+      t1 = Tree.new(test_arr1)
+      evens = t1.level_order_rec.filter.each_with_index { |e, i| e.value if i.even? }
+      exp = [t1.root,
+             t1.root.right,
+             t1.root.left.right, t1.root.right.right,
+             t1.root.left.left.right, t1.root.left.right.right, t1.root.right.left.right, t1.root.right.right.right]
+      expect(evens).to eql(exp)
+    end
+
+    it "contains left children on odd index positions" do
+      t1 = Tree.new(test_arr1)
+      odds = t1.level_order_rec.filter.each_with_index { |e, i| e.value if i.odd? }
+      exp = [t1.root.left,
+             t1.root.left.left, t1.root.right.left,
+             t1.root.left.left.left, t1.root.left.right.left, t1.root.right.left.left, t1.root.right.right.left]
+      expect(odds).to eql(exp)
+    end
   end
 
-  context "in_order" do
-    t1 = Tree.new(test_arr1)
-    vals = t1.in_order.map(&:value)
-
+  context "in_order (left-->root-->right)" do
     it "returns elements in the ascending order" do
+      t1 = Tree.new(test_arr1)
+      expect(t1.in_order_q).to eql([])
+      vals = t1.in_order.map(&:value)
       expect(vals).to eql(test_arr1.uniq.sort)
+    end
+  end
+
+  context "pre_order (root-->left-->right)" do
+    it "updates the @pre_order_q " do
+      t1 = Tree.new(test_arr3)
+      exp = [7, 3, 1, 4, 15, 8, 23]
+      exp1 = [t1.root,
+              t1.root.left, t1.root.left.left, t1.root.left.right,
+              t1.root.right, t1.root.right.left, t1.root.right.right]
+      expect(t1.pre_order_q).to eql([])
+      t1.pre_order
+      expect(t1.pre_order_q.map(&:value)).to eql(exp)
+      expect(t1.pre_order_q).to eql(exp1)
+    end
+  end
+
+  context "post_order (left-->right-->root)" do
+    it "updates the @pre_order_q " do
+      t1 = Tree.new(test_arr3)
+      exp = [1, 4, 3, 8, 23, 15, 7]
+      exp1 = [t1.root.left.left, t1.root.left.right, t1.root.left,
+              t1.root.right.left, t1.root.right.right, t1.root.right,
+              t1.root]
+      expect(t1.post_order_q).to eql([])
+      t1.post_order
+      expect(t1.post_order_q.map(&:value)).to eql(exp)
+      expect(t1.post_order_q).to eql(exp1)
     end
   end
 end

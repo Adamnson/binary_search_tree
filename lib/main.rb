@@ -25,13 +25,15 @@ end
 #
 class Tree # rubocop:disable Metrics/ClassLength
   attr_accessor :root
-  attr_reader :level_order_q, :in_order_q
+  attr_reader :level_order_q, :in_order_q, :pre_order_q, :post_order_q
 
   def initialize(arr)
     @root = build_tree(arr)
     @level_order_q = [@root]
     @loq_index = 0
     @in_order_q = []
+    @pre_order_q = []
+    @post_order_q = []
   end
 
   def build_tree(arr)
@@ -146,6 +148,28 @@ class Tree # rubocop:disable Metrics/ClassLength
     @in_order_q
   end
 
+  def pre_order(node = @root, clear: true)
+    @pre_order_q = [] if clear
+    return @pre_order_q.append(node) if node.left.nil? && node.right.nil?
+
+    @pre_order_q.append(node)
+    pre_order(node.left, clear: false) unless node.left.nil?
+    pre_order(node.right, clear: false) unless node.right.nil?
+
+    @pre_order_q
+  end
+
+  def post_order(node = @root, clear: true)
+    @post_order_q = [] if clear
+    return @post_order_q.append(node) if node.left.nil? && node.right.nil?
+
+    post_order(node.left, clear: false) unless node.left.nil?
+    post_order(node.right, clear: false) unless node.right.nil?
+    @post_order_q.append(node)
+
+    @post_order_q
+  end
+
   def pretty_print(node = @root, prefix = "", is_left: true)
     pretty_print(node.right, "#{prefix}#{is_left ? '│   ' : '    '}", is_left: false) if node.right
     puts "#{prefix}#{is_left ? '└── ' : '┌── '}#{node.value}"
@@ -158,7 +182,7 @@ t1 = Tree.new([1, 7, 4, 23, 8, 27, 79, 111, 47, 9, 4, 3, 5, 7, 9, 67, 6345, 324]
 
 # p t1.root
 t1.pretty_print
-
+############################################
 # t1.insert(12)
 # t1.insert(-11)
 # t1.insert(57)
@@ -175,36 +199,58 @@ t1.pretty_print
 # puts t1.find(5)
 
 # puts t1.find(39)
+############################################
+# in_ord_q = t1.in_order
 
-# sol = t1.level_order_rec
-
-# puts "sol is #{sol}"
-
-# puts "all elements in level order: "
-# sol.each { |e| print "#{e.value} " }
+# in_ord_q.each { |e| print "#{e.value} " }
 # puts " "
 
-# puts "root + right children: "
-# sol.each_with_index { |e, i| print "#{e.value} " if i.even? }
+# t1.delete(67)
+# t1.pretty_print
+
+# t1.delete(8)
+# t1.pretty_print
+
+# in_ord_q = t1.in_order
+
+# puts "printing after deletions"
+# in_ord_q.each { |e| print "#{e.value} " }
+# puts " "
+############################################
+# pre_ord_q = t1.pre_order
+# post_ord_q = t1.post_order
+
+# puts "pre order: "
+# pre_ord_q.each { |e| print "#{e.value} " }
 # puts " "
 
-# puts "left children"
-# sol.each_with_index { |e, i| print "#{e.value} " if i.odd? }
+# puts "post order: "
+# post_ord_q.each { |e| print "#{e.value} " }
 # puts " "
 
-in_ord_q = t1.in_order
+# t1.delete(67)
+# t1.pretty_print
 
-in_ord_q.each { |e| print "#{e.value} " }
-puts " "
+# t1.delete(8)
+# t1.pretty_print
 
-t1.delete(67)
-t1.pretty_print
+# puts "after deletions"
+# pre_ord_q = t1.pre_order
+# post_ord_q = t1.post_order
 
-t1.delete(8)
-t1.pretty_print
+# puts "pre order: "
+# pre_ord_q.each { |e| print "#{e.value} " }
+# puts " "
 
-in_ord_q = t1.in_order
+# puts "post order: "
+# post_ord_q.each { |e| print "#{e.value} " }
+# puts " "
 
-puts "printing after deletions"
-in_ord_q.each { |e| print "#{e.value} " }
-puts " "
+test_arr2 = [1, 7, 4, 23, 8]
+test_arr3 = [1, 7, 4, 23, 3, 15, 8]
+
+t2 = Tree.new(test_arr2)
+t3 = Tree.new(test_arr3)
+
+t2.pretty_print
+t3.pretty_print
