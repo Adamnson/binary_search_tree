@@ -59,7 +59,7 @@ describe Tree do # rubocop:disable Metrics/BlockLength
 
     it "return nil if the value was not found" do
       node = t1.find(36)
-      expect(node).to eql(nil)
+      expect(node).to be_nil
     end
 
     it "finds and returns the root element correctly" do
@@ -68,7 +68,7 @@ describe Tree do # rubocop:disable Metrics/BlockLength
     end
   end
 
-  context "level_order_rec" do
+  context "#level_order_rec" do
     t1 = Tree.new(test_arr3)
     expected = [t1.root, t1.root.left, t1.root.right,
                 t1.root.left.left, t1.root.left.right,
@@ -100,7 +100,7 @@ describe Tree do # rubocop:disable Metrics/BlockLength
     end
   end
 
-  context "in_order (left-->root-->right)" do
+  context "#in_order (left-->root-->right)" do
     it "returns elements in the ascending order" do
       t1 = Tree.new(test_arr1)
       expect(t1.in_order_q).to eql([])
@@ -117,7 +117,7 @@ describe Tree do # rubocop:disable Metrics/BlockLength
     end
   end
 
-  context "pre_order (root-->left-->right)" do
+  context "#pre_order (root-->left-->right)" do
     it "updates the @pre_order_q " do
       t1 = Tree.new(test_arr3)
       exp = [7, 3, 1, 4, 15, 8, 23]
@@ -139,7 +139,7 @@ describe Tree do # rubocop:disable Metrics/BlockLength
     end
   end
 
-  context "post_order (left-->right-->root)" do
+  context "#post_order (left-->right-->root)" do
     it "updates the @post_order_q " do
       t1 = Tree.new(test_arr3)
       exp = [1, 4, 3, 8, 23, 15, 7]
@@ -161,7 +161,7 @@ describe Tree do # rubocop:disable Metrics/BlockLength
     end
   end
 
-  context "depth" do
+  context "#height" do
     it "is 0 for leaf nodes" do
       t1 = Tree.new(test_arr1)
       expect(t1.height(t1.find(1))).to eql(0)
@@ -183,6 +183,39 @@ describe Tree do # rubocop:disable Metrics/BlockLength
       expect(t1.height(t1.root.left.right)).to eql(1)
       expect(t1.height(t1.root.right.left)).to eql(1)
       expect(t1.height(t1.root.right.right)).to eql(1)
+    end
+
+    it "raises NameError on nil input (from find)" do
+      t1 = Tree.new(test_arr3)
+      expect { t1.height(t1.find(55)) }.to raise_error(NameError)
+    end
+  end
+
+  context "#depth" do
+    t1 = Tree.new(test_arr1)
+    it "is 0 for @root" do
+      expect(t1.depth(t1.root)).to eql(0)
+    end
+
+    it "raises NameError on nil input (from find)" do
+      expect { t1.depth(t1.find(55)) }.to raise_error(NameError)
+    end
+
+    it "assigns correct values" do
+      expect(t1.depth(t1.root.left)).to eql(1)
+      expect(t1.depth(t1.root.right)).to eql(1)
+      expect(t1.depth(t1.root.left.left)).to eql(2)
+      expect(t1.depth(t1.root.left.right)).to eql(2)
+      expect(t1.depth(t1.root.right.left)).to eql(2)
+      expect(t1.depth(t1.root.right.right)).to eql(2)
+      expect(t1.depth(t1.find(1))).to eql(3)
+      expect(t1.depth(t1.find(4))).to eql(3)
+      expect(t1.depth(t1.find(7))).to eql(3)
+      expect(t1.depth(t1.find(9))).to eql(3)
+      expect(t1.depth(t1.find(27))).to eql(3)
+      expect(t1.depth(t1.find(67))).to eql(3)
+      expect(t1.depth(t1.find(111))).to eql(3)
+      expect(t1.depth(t1.find(6345))).to eql(3)
     end
   end
 end

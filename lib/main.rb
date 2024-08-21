@@ -181,6 +181,10 @@ class Tree # rubocop:disable Metrics/ClassLength
     [left + 1, right + 1].max
   end
 
+  def depth(node = @root)
+    height(@root) - height(node)
+  end
+
   def pretty_print(node = @root, prefix = "", is_left: true)
     pretty_print(node.right, "#{prefix}#{is_left ? '│   ' : '    '}", is_left: false) if node.right
     puts "#{prefix}#{is_left ? '└── ' : '┌── '}#{node.value}"
