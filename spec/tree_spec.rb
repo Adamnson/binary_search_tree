@@ -160,4 +160,29 @@ describe Tree do # rubocop:disable Metrics/BlockLength
       expect(t1.post_order_q.map(&:value)).to eql(exp)
     end
   end
+
+  context "depth" do
+    it "is 0 for leaf nodes" do
+      t1 = Tree.new(test_arr1)
+      expect(t1.height(t1.find(1))).to eql(0)
+      expect(t1.height(t1.find(4))).to eql(0)
+      expect(t1.height(t1.find(7))).to eql(0)
+      expect(t1.height(t1.find(9))).to eql(0)
+      expect(t1.height(t1.find(27))).to eql(0)
+      expect(t1.height(t1.find(67))).to eql(0)
+      expect(t1.height(t1.find(111))).to eql(0)
+      expect(t1.height(t1.find(6345))).to eql(0)
+    end
+
+    it "assigns correct values" do
+      t1 = Tree.new(test_arr1)
+      expect(t1.height(t1.root)).to eql(3)
+      expect(t1.height(t1.root.left)).to eql(2)
+      expect(t1.height(t1.root.right)).to eql(2)
+      expect(t1.height(t1.root.left.left)).to eql(1)
+      expect(t1.height(t1.root.left.right)).to eql(1)
+      expect(t1.height(t1.root.right.left)).to eql(1)
+      expect(t1.height(t1.root.right.right)).to eql(1)
+    end
+  end
 end

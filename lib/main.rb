@@ -170,6 +170,17 @@ class Tree # rubocop:disable Metrics/ClassLength
     @post_order_q
   end
 
+  def height(node = @root)
+    return 0 if node.left.nil? && node.right.nil?
+
+    left = right = 0
+
+    left = height(node.left) unless node.left.nil?
+    right = height(node.right) unless node.right.nil?
+
+    [left + 1, right + 1].max
+  end
+
   def pretty_print(node = @root, prefix = "", is_left: true)
     pretty_print(node.right, "#{prefix}#{is_left ? '│   ' : '    '}", is_left: false) if node.right
     puts "#{prefix}#{is_left ? '└── ' : '┌── '}#{node.value}"
@@ -247,5 +258,9 @@ test_arr3 = [1, 7, 4, 23, 3, 15, 8]
 t2 = Tree.new(test_arr2)
 t3 = Tree.new(test_arr3)
 
-t2.pretty_print
-t3.pretty_print
+# t2.pretty_print
+# t3.pretty_print
+
+puts "height from root is #{t1.height}"
+puts "height from 67 is #{t1.height(t1.find(67))}"
+puts "height of 79 is #{t1.height(t1.find(79))}"
