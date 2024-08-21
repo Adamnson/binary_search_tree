@@ -107,6 +107,14 @@ describe Tree do # rubocop:disable Metrics/BlockLength
       vals = t1.in_order.map(&:value)
       expect(vals).to eql(test_arr1.uniq.sort)
     end
+
+    it "traverses in order from specified node" do
+      t1 = Tree.new(test_arr1)
+      exp = [27, 47, 67, 79, 111, 324, 6345]
+      expect(t1.in_order_q).to eql([])
+      vals = t1.in_order(t1.root.right).map(&:value)
+      expect(vals).to eql(exp)
+    end
   end
 
   context "pre_order (root-->left-->right)" do
@@ -121,10 +129,18 @@ describe Tree do # rubocop:disable Metrics/BlockLength
       expect(t1.pre_order_q.map(&:value)).to eql(exp)
       expect(t1.pre_order_q).to eql(exp1)
     end
+
+    it "traverses pre order from specified node" do
+      t1 = Tree.new(test_arr1)
+      exp = [79, 47, 27, 67, 324, 111, 6345]
+      expect(t1.pre_order_q).to eql([])
+      t1.pre_order(t1.root.right)
+      expect(t1.pre_order_q.map(&:value)).to eql(exp)
+    end
   end
 
   context "post_order (left-->right-->root)" do
-    it "updates the @pre_order_q " do
+    it "updates the @post_order_q " do
       t1 = Tree.new(test_arr3)
       exp = [1, 4, 3, 8, 23, 15, 7]
       exp1 = [t1.root.left.left, t1.root.left.right, t1.root.left,
@@ -134,6 +150,14 @@ describe Tree do # rubocop:disable Metrics/BlockLength
       t1.post_order
       expect(t1.post_order_q.map(&:value)).to eql(exp)
       expect(t1.post_order_q).to eql(exp1)
+    end
+
+    it "traverses post order from specified node" do
+      t1 = Tree.new(test_arr1)
+      exp = [27, 67, 47, 111, 6345, 324, 79]
+      expect(t1.post_order_q).to eql([])
+      t1.post_order(t1.root.right)
+      expect(t1.post_order_q.map(&:value)).to eql(exp)
     end
   end
 end

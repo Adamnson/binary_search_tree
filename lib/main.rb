@@ -211,11 +211,6 @@ t1.pretty_print
 # t1.delete(8)
 # t1.pretty_print
 
-# in_ord_q = t1.in_order
-
-# puts "printing after deletions"
-# in_ord_q.each { |e| print "#{e.value} " }
-# puts " "
 ############################################
 # pre_ord_q = t1.pre_order
 # post_ord_q = t1.post_order
