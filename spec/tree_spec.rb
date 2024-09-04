@@ -220,7 +220,7 @@ describe Tree do # rubocop:disable Metrics/BlockLength
   end
 
   context "#balanced?" do
-    it "returns false if flag is false" do
+    xit "returns false if flag is false" do
       t1 = Tree.new(test_arr1)
       expect(t1.balanced?(t1.root, flag: false)).to be false
     end

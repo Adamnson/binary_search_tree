@@ -59,7 +59,7 @@ class Tree # rubocop:disable Metrics/ClassLength
     return if element.eql?(node.value)
 
     next_node = element < node.value ? node.left : node.right
-    if (node.left.nil? && node.right.nil?) || next_node.nil?
+    if leaf_node?(node) || next_node.nil?
       new_node = Node.new(element)
       new_node < node ? node.left = new_node : node.right = new_node
     else
@@ -80,11 +80,10 @@ class Tree # rubocop:disable Metrics/ClassLength
     end
   end
 
-  def delete_node_based_on_branching(node, next_node) # rubocop:disable Metrics/CyclomaticComplexity,Metrics/PerceivedComplexity
-    is_leaf_node = next_node.left.nil? && next_node.right.nil? # leaf_node_deletion
+  def delete_node_based_on_branching(node, next_node)
     has_only_left = next_node < node && next_node.right.nil? # deletion of node with single child
     has_only_right = next_node > node && next_node.left.nil? # deletion of node with single child
-    if is_leaf_node
+    if leaf_node?(next_node)
       next_node < node ? node.left = nil : node.right = nil
     elsif has_only_left
       node.left = next_node.left
@@ -101,11 +100,15 @@ class Tree # rubocop:disable Metrics/ClassLength
       in_order_successor.left = next_node.left
       next_node < node ? node.left = in_order_successor : node.right = in_order_successor
     else
-      reached_leaf_node = in_order_successor.left.left.nil? && in_order_successor.left.right.nil?
+      reached_leaf_node = leaf_node?(in_order_successor.left)
       in_order_successor = in_order_successor.left until reached_leaf_node
       swap(next_node, in_order_successor)
       in_order_successor.left = nil
     end
+  end
+
+  def leaf_node?(node)
+    node.left.nil? && node.right.nil?
   end
 
   def swap(node_a, node_b)
@@ -125,7 +128,7 @@ class Tree # rubocop:disable Metrics/ClassLength
   end
 
   def level_order_rec(node = @root)
-    return if node.left.nil? && node.right.nil?
+    return if leaf_node?(node)
 
     @level_order_q.append(node.left) unless node.left.nil?
     @level_order_q.append(node.right) unless node.right.nil?
@@ -137,7 +140,7 @@ class Tree # rubocop:disable Metrics/ClassLength
 
   def in_order(node = @root, clear: true)
     @in_order_q = [] if clear
-    return @in_order_q.append(node) if node.left.nil? && node.right.nil?
+    return @in_order_q.append(node) if leaf_node?(node)
 
     in_order(node.left, clear: false) unless node.left.nil?
     @in_order_q.append(node)
@@ -150,7 +153,7 @@ class Tree # rubocop:disable Metrics/ClassLength
 
   def pre_order(node = @root, clear: true)
     @pre_order_q = [] if clear
-    return @pre_order_q.append(node) if node.left.nil? && node.right.nil?
+    return @pre_order_q.append(node) if leaf_node?(node)
 
     @pre_order_q.append(node)
     pre_order(node.left, clear: false) unless node.left.nil?
@@ -161,7 +164,7 @@ class Tree # rubocop:disable Metrics/ClassLength
 
   def post_order(node = @root, clear: true)
     @post_order_q = [] if clear
-    return @post_order_q.append(node) if node.left.nil? && node.right.nil?
+    return @post_order_q.append(node) if leaf_node?(node)
 
     post_order(node.left, clear: false) unless node.left.nil?
     post_order(node.right, clear: false) unless node.right.nil?
@@ -171,7 +174,7 @@ class Tree # rubocop:disable Metrics/ClassLength
   end
 
   def height(node = @root)
-    return 0 if node.left.nil? && node.right.nil?
+    return 0 if leaf_node?(node)
 
     left = right = 0
 
@@ -188,7 +191,7 @@ class Tree # rubocop:disable Metrics/ClassLength
   def balanced?(node = @root, flag: false)
     return false if flag
 
-    return true if node.left.nil? && node.right.nil?
+    return true if leaf_node?(node)
 
     puts "left: #{node.left.value} right: #{node.right.value}"
 
@@ -284,7 +287,7 @@ puts "height of 79 is #{t1.height(t1.find(79))}"
 
 # t1.delete(7)
 # t1.delete(5)
-t1.delete(8)
+# t1.delete(8)
 
 t1.pretty_print
 puts t1.balanced?(t1.root.left)
