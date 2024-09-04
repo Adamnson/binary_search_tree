@@ -185,6 +185,19 @@ class Tree # rubocop:disable Metrics/ClassLength
     height(@root) - height(node)
   end
 
+  def balanced?(node = @root, flag: false)
+    return false if flag
+
+    return true if node.left.nil? && node.right.nil?
+
+    puts "left: #{node.left.value} right: #{node.right.value}"
+
+    left_score = node.left.nil? ? -1 : height(node.left)
+    right_score = node.right.nil? ? -1 : height(node.right)
+    flag = (left_score - right_score).abs > 1
+    !flag && (balanced?(node.left) && balanced?(node.right))
+  end
+
   def pretty_print(node = @root, prefix = "", is_left: true)
     pretty_print(node.right, "#{prefix}#{is_left ? '│   ' : '    '}", is_left: false) if node.right
     puts "#{prefix}#{is_left ? '└── ' : '┌── '}#{node.value}"
@@ -268,3 +281,11 @@ t3 = Tree.new(test_arr3)
 puts "height from root is #{t1.height}"
 puts "height from 67 is #{t1.height(t1.find(67))}"
 puts "height of 79 is #{t1.height(t1.find(79))}"
+
+# t1.delete(7)
+# t1.delete(5)
+t1.delete(8)
+
+t1.pretty_print
+puts t1.balanced?(t1.root.left)
+puts t1.balanced?

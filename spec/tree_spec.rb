@@ -68,7 +68,7 @@ describe Tree do # rubocop:disable Metrics/BlockLength
     end
   end
 
-  context "#level_order_rec" do
+  context "#level_order_rec" do # rubocop:disable Metrics/BlockLength
     t1 = Tree.new(test_arr3)
     expected = [t1.root, t1.root.left, t1.root.right,
                 t1.root.left.left, t1.root.left.right,
@@ -216,6 +216,13 @@ describe Tree do # rubocop:disable Metrics/BlockLength
       expect(t1.depth(t1.find(67))).to eql(3)
       expect(t1.depth(t1.find(111))).to eql(3)
       expect(t1.depth(t1.find(6345))).to eql(3)
+    end
+  end
+
+  context "#balanced?" do
+    it "returns false if flag is false" do
+      t1 = Tree.new(test_arr1)
+      expect(t1.balanced?(t1.root, flag: false)).to be false
     end
   end
 end
