@@ -174,6 +174,7 @@ class Tree # rubocop:disable Metrics/ClassLength
   end
 
   def height(node = @root)
+    return -1 if node.nil?
     return 0 if leaf_node?(node)
 
     left = right = 0
@@ -185,6 +186,8 @@ class Tree # rubocop:disable Metrics/ClassLength
   end
 
   def depth(node = @root)
+    return -1 if node.nil?
+
     height(@root) - height(node)
   end
 
@@ -193,8 +196,8 @@ class Tree # rubocop:disable Metrics/ClassLength
 
     return true if leaf_node?(node)
 
-    left_score = node.left.nil? ? -1 : height(node.left)
-    right_score = node.right.nil? ? -1 : height(node.right)
+    left_score =  height(node.left)
+    right_score = height(node.right)
     flag = (left_score - right_score).abs > 1
     !flag && (balanced?(node&.left) && balanced?(node&.right))
   end

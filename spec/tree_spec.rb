@@ -80,6 +80,11 @@ describe Tree do # rubocop:disable Metrics/BlockLength
       expect(t1.leaf_node?(t1.find(23))).to be false
       expect(t1.leaf_node?(t1.find(4))).to be false
     end
+
+    it "is true for nil input" do
+      t1 = Tree.new(test_arr1)
+      expect(t1.leaf_node?(nil)).to be true
+    end
   end
 
   context "#find" do
@@ -217,10 +222,9 @@ describe Tree do # rubocop:disable Metrics/BlockLength
       expect(t1.height(t1.root.right.right)).to eql(1)
     end
 
-    it "raises NameError on nil input (from find)" do
+    it "is -1 for nil input (from find)" do
       t1 = Tree.new(test_arr3)
-      # expect { t1.height(t1.find(55)) }.to raise_error(NameError)
-      expect(t1.height(t1.find(55))).to eql(0)
+      expect(t1.height(t1.find(55))).to eql(-1)
     end
   end
 
@@ -230,9 +234,8 @@ describe Tree do # rubocop:disable Metrics/BlockLength
       expect(t1.depth(t1.root)).to eql(0)
     end
 
-    xit "raises NameError on nil input (from find)" do
-      # expect { t1.depth(t1.find(55)) }.to raise_error(NameError)
-      expect(t1.depth(t1.find(55))).to eql(0)
+    it "is -1 for nil input (from find)" do
+      expect(t1.depth(t1.find(55))).to eql(-1)
     end
 
     it "assigns correct values" do
