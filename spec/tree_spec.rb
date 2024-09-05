@@ -257,9 +257,40 @@ describe Tree do # rubocop:disable Metrics/BlockLength
   end
 
   context "#balanced?" do
-    it "returns false if flag is true" do
+    it "is false if flag is true" do
       t1 = Tree.new(test_arr1)
       expect(t1.balanced?(t1.root, flag: true)).to be false
+    end
+
+    it "is true if tree is perfectly balanced" do
+      t1 = Tree.new(test_arr3)
+      left_height = t1.height(t1.root.left)
+      right_height = t1.height(t1.root.right)
+      expect(t1.balanced?).to be true
+      expect(left_height).to eql(right_height)
+    end
+
+    it "is true of tree is improperly balanced" do
+      t1 = Tree.new(test_arr1)
+      t1.delete(7)
+      t1.delete(8)
+      left_left_height = t1.height(t1.root.left.left)
+      left_right_height = t1.height(t1.root.left.right)
+      expect(t1.balanced?).to be true
+      expect(left_left_height).to_not eql(left_right_height)
+      expect(left_left_height).to be_within(1).of(left_right_height)
+    end
+
+    it "is false if tree is not balanced" do
+      t1 = Tree.new(test_arr1)
+      t1.delete(7)
+      t1.delete(8)
+      t1.delete(5)
+      left_left_height = t1.height(t1.root.left.left)
+      left_right_height = t1.height(t1.root.left.right)
+      expect(t1.balanced?).to be false
+      expect(left_left_height).to_not eql(left_right_height)
+      expect(left_left_height).to_not be_within(1).of(left_right_height)
     end
   end
 end
