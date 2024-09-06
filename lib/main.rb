@@ -213,97 +213,28 @@ class Tree # rubocop:disable Metrics/ClassLength
   end
 end
 
-t1 = Tree.new([1, 7, 4, 23, 8, 27, 79, 111, 47, 9, 4, 3, 5, 7, 9, 67, 6345, 324])
-# t1 = Tree.new([1, 7, 4, 23, 8])
+# t1 = Tree.new([1, 7, 4, 23, 8, 27, 79, 111, 47, 9, 4, 3, 5, 7, 9, 67, 6345, 324])
 
-# p t1.root
+# test_arr2 = [1, 7, 4, 23, 8]
+# test_arr3 = [1, 7, 4, 23, 3, 15, 8]
+
+# t2 = Tree.new(test_arr2)
+# t3 = Tree.new(test_arr3)
+
+# t2.pretty_print
+# t3.pretty_print
+
+t1 = Tree.new(Array.new(15) { rand(1..100) })
 t1.pretty_print
-############################################
-# t1.insert(12)
-# t1.insert(-11)
-# t1.insert(57)
-# t1.insert(39)
-# puts t1.insert(5)
+puts "balanced    : #{t1.balanced?}"
 
-# t1.delete(67)
-# t1.pretty_print
-# t1.delete(7)
-# t1.pretty_print
-# t1.delete(8)
-# t1.pretty_print
+puts "in-order    : #{t1.in_order.map(&:value)}"
+puts "pre-order   : #{t1.pre_order.map(&:value)}"
+puts "post-order  : #{t1.post_order.map(&:value)}"
 
-# puts t1.find(5)
-
-# puts t1.find(39)
-############################################
-# in_ord_q = t1.in_order
-
-# in_ord_q.each { |e| print "#{e.value} " }
-# puts " "
-
-# t1.delete(67)
-# t1.pretty_print
-
-# t1.delete(8)
-# t1.pretty_print
-
-############################################
-# pre_ord_q = t1.pre_order
-# post_ord_q = t1.post_order
-
-# puts "pre order: "
-# pre_ord_q.each { |e| print "#{e.value} " }
-# puts " "
-
-# puts "post order: "
-# post_ord_q.each { |e| print "#{e.value} " }
-# puts " "
-
-# t1.delete(67)
-# t1.pretty_print
-
-# t1.delete(8)
-# t1.pretty_print
-
-# puts "after deletions"
-# pre_ord_q = t1.pre_order
-# post_ord_q = t1.post_order
-
-# puts "pre order: "
-# pre_ord_q.each { |e| print "#{e.value} " }
-# puts " "
-
-# puts "post order: "
-# post_ord_q.each { |e| print "#{e.value} " }
-# puts " "
-
-test_arr2 = [1, 7, 4, 23, 8]
-test_arr3 = [1, 7, 4, 23, 3, 15, 8]
-
-t2 = Tree.new(test_arr2)
-t3 = Tree.new(test_arr3)
-
-t2.pretty_print
-t3.pretty_print
-#
-# puts t1.height(t1.find(55))
-# puts "height from root is #{t1.height}"
-# puts "height from 67 is #{t1.height(t1.find(67))}"
-# puts "height of 79 is #{t1.height(t1.find(79))}"
-
-t1.delete(7)
-t1.delete(5)
-t1.delete(8)
-
+(Array.new(37) { rand(101..500) }).each { |i| t1.insert(i) }
 t1.pretty_print
-puts t1.balanced?(t1.root.left)
-puts t1.balanced?
-
-# t_trial = Tree.new([1, 4, 5, 23, 27, 79, 111, 47, 9, 4, 3, 9, 67, 6345, 324])
-
-# t_trial.pretty_print
-# puts t_trial.balanced?
-#
+puts "balanced    : #{t1.balanced?}"
 t1.rebalance
 t1.pretty_print
-puts t1.balanced?
+puts "balanced    : #{t1.balanced?}"
