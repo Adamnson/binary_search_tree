@@ -202,6 +202,10 @@ class Tree # rubocop:disable Metrics/ClassLength
     !flag && (balanced?(node&.left) && balanced?(node&.right))
   end
 
+  def rebalance
+    initialize(in_order.map(&:value))
+  end
+
   def pretty_print(node = @root, prefix = "", is_left: true)
     pretty_print(node.right, "#{prefix}#{is_left ? '│   ' : '    '}", is_left: false) if node.right
     puts "#{prefix}#{is_left ? '└── ' : '┌── '}#{node.value}"
@@ -275,10 +279,10 @@ t1.pretty_print
 
 test_arr2 = [1, 7, 4, 23, 8]
 test_arr3 = [1, 7, 4, 23, 3, 15, 8]
-#
+
 t2 = Tree.new(test_arr2)
 t3 = Tree.new(test_arr3)
-#
+
 t2.pretty_print
 t3.pretty_print
 #
@@ -287,15 +291,19 @@ t3.pretty_print
 # puts "height from 67 is #{t1.height(t1.find(67))}"
 # puts "height of 79 is #{t1.height(t1.find(79))}"
 
-# t1.delete(7)
-# t1.delete(5)
-# t1.delete(8)
+t1.delete(7)
+t1.delete(5)
+t1.delete(8)
 
-# t1.pretty_print
-# puts t1.balanced?(t1.root.left)
-# puts t1.balanced?
+t1.pretty_print
+puts t1.balanced?(t1.root.left)
+puts t1.balanced?
 
 # t_trial = Tree.new([1, 4, 5, 23, 27, 79, 111, 47, 9, 4, 3, 9, 67, 6345, 324])
 
 # t_trial.pretty_print
 # puts t_trial.balanced?
+#
+t1.rebalance
+t1.pretty_print
+puts t1.balanced?

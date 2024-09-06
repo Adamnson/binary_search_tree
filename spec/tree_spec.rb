@@ -49,7 +49,7 @@ describe Tree do # rubocop:disable Metrics/BlockLength
       expect(t1.root.right.left.value).to eql(47)
     end
   end
-  context "#leaf_node?" do
+  context "#leaf_node?" do # rubocop:disable Metrics/BlockLength
     it "is true if node is the leaf node" do
       t1 = Tree.new(test_arr1)
       expect(t1.leaf_node?(t1.find(1))).to be true
@@ -256,7 +256,7 @@ describe Tree do # rubocop:disable Metrics/BlockLength
     end
   end
 
-  context "#balanced?" do
+  context "#balanced?" do # rubocop:disable Metrics/BlockLength
     it "is false if flag is true" do
       t1 = Tree.new(test_arr1)
       expect(t1.balanced?(t1.root, flag: true)).to be false
@@ -291,6 +291,28 @@ describe Tree do # rubocop:disable Metrics/BlockLength
       expect(t1.balanced?).to be false
       expect(left_left_height).to_not eql(left_right_height)
       expect(left_left_height).to_not be_within(1).of(left_right_height)
+    end
+  end
+
+  context "#rebalance" do
+    it "rebalances the tree" do
+      t1 = Tree.new(test_arr1)
+      t1.delete(7)
+      t1.delete(8)
+      t1.delete(5)
+      left_left_height = t1.height(t1.root.left.left)
+      left_right_height = t1.height(t1.root.left.right)
+      expect(t1.root.value).to eql(23)
+      expect(t1.balanced?).to be false
+      expect(left_left_height).to_not eql(left_right_height)
+      expect(left_left_height).to_not be_within(1).of(left_right_height)
+      t1.rebalance
+      expect(t1.root.value).to eql(47)
+      left_left_height = t1.height(t1.root.left.left)
+      left_right_height = t1.height(t1.root.left.right)
+      expect(t1.balanced?).to be true
+      expect(left_left_height).to eql(left_right_height)
+      expect(left_left_height).to be_within(1).of(left_right_height)
     end
   end
 end
